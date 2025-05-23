@@ -222,7 +222,7 @@ export async function fetchPageData(subdomain, slug = "home") {
 /**
  * Fetch site configuration and themes
  * @param {string} subdomain - The site subdomain
- * @returns {Object} Site configuration and themes
+ * @returns {Object} Complete site data structure
  */
 export async function fetchSiteConfigAndThemes(subdomain) {
   try {
@@ -239,16 +239,13 @@ export async function fetchSiteConfigAndThemes(subdomain) {
       throw new Error("Site not found");
     }
 
-    // Create a themes array with just the single theme
-    const themes = [data.theme].map(inner => ({
-      ...inner,
-      primary: inner.primary_color,
-    }));
-
+    // Return the complete data structure
     return {
       site: data.site,
-      themes,
+      theme: data.theme,
       config: data.config,
+      pages: data.pages,
+      siteMeta: data.siteMeta
     };
   } catch (error) {
     console.error("Error fetching site config:", error);

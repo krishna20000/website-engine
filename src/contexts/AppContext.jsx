@@ -3,53 +3,36 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
 const AppContext = createContext({
+  site: null,
   theme: null,
-  siteConfig: null,
-  setTheme: () => {},
+  config: null,
+  pages: null,
+  siteMeta: null,
 });
 
-export const AppProvider = ({ children, initialSite, initialThemes }) => {
-  // State for the current site configuration and themes
-  const [siteConfig, setSiteConfig] = useState(initialSite || null);
-  const [themes, setThemes] = useState(initialThemes || []);
+export const AppProvider = ({ children, initialSite }) => {
+  const [site, setSite] = useState(initialSite?.site || null);
+  const [theme, setTheme] = useState(initialSite?.theme || null);
+  const [config, setConfig] = useState(initialSite?.config || null);
+  const [pages, setPages] = useState(initialSite?.pages || null);
+  const [siteMeta, setSiteMeta] = useState(initialSite?.siteMeta || null);
 
-  // State for the current theme
-  const [activeTheme, setActiveTheme] = useState(null);
-
-  // Effect to initialize the theme when the component mounts
   useEffect(() => {
-    if (!siteConfig) return;
-
-    // Try to get the saved theme ID from localStorage
-    const savedThemeId = localStorage.getItem("site-theme-id");
-
-    // Find the theme in the available themes or use the first one as default
-    let themeToUse = themes.find((t) => t.id === savedThemeId);
-
-    // If no saved theme or theme not found, use the first available theme
-    if (!themeToUse && themes.length > 0) {
-      themeToUse = themes[0];
+    if (initialSite) {
+      setSite(initialSite.site);
+      setTheme(initialSite.theme);
+      setConfig(initialSite.config);
+      setPages(initialSite.pages);
+      setSiteMeta(initialSite.siteMeta);
     }
+  }, [initialSite]);
 
-    setActiveTheme(themeToUse);
-  }, [siteConfig, themes]);
-
-  // Function to set the active theme by ID
-  const setTheme = (themeId) => {
-    const themeToUse = themes.find((t) => t.id === themeId);
-
-    if (themeToUse) {
-      setActiveTheme(themeToUse);
-      localStorage.setItem("site-theme-id", themeId);
-    }
-  };
-
-  // The value to provide in the context
   const contextValue = {
-    theme: activeTheme,
-    siteConfig,
-    themes,
-    setTheme,
+    site,
+    theme,
+    config,
+    pages,
+    siteMeta,
   };
 
   return (

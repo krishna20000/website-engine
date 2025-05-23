@@ -4,6 +4,8 @@ import { AppProvider } from "@/contexts/AppContext";
 import ThemeProvider from "@/contexts/ThemeProvider";
 import { fetchSiteConfigAndThemes } from "@/lib/api/siteservice";
 import { headers } from "next/headers";
+import { ThemeProvider as NewThemeProvider } from "@/components/theme-provider";
+import { FloatingActions } from '@/components/FloatingActions';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +37,11 @@ function getSubdomain(host) {
 export const dynamic = "force-dynamic";
 export const runtime = "edge";
 
+export const metadata = {
+  title: "Modern Dark Theme Website",
+  description: "A modern website with dark theme and responsive design",
+};
+
 export default async function RootLayout({ children }) {
   try {
     // Get the host from headers to determine subdomain
@@ -46,13 +53,23 @@ export default async function RootLayout({ children }) {
     const subdomain = getSubdomain(host);
 
     // Fetch site configuration and themes
-    const { site, themes } = await fetchSiteConfigAndThemes(subdomain);
+    const siteData = await fetchSiteConfigAndThemes(subdomain);
 
     return (
-      <html lang="en">
-        <body className={inter.className}>
-          <AppProvider initialSite={site} initialThemes={themes}>
-            <ThemeProvider>{children}</ThemeProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased`}>
+          <AppProvider initialSite={siteData}>
+            <ThemeProvider>
+              <NewThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem={false}
+                disableTransitionOnChange
+              >
+                {children}
+                <FloatingActions />
+              </NewThemeProvider>
+            </ThemeProvider>
           </AppProvider>
         </body>
       </html>
@@ -60,10 +77,52 @@ export default async function RootLayout({ children }) {
   } catch (error) {
     console.error("Error in RootLayout:", error);
 
-    // Fallback to basic layout
+    // Fallback to basic layout with default data
+    const defaultSiteData = {
+      site: {
+        name: "Default Site",
+        description: "A default website",
+      },
+      theme: {
+        primary: "#D4AF37",
+        secondary: "#1a1a1a",
+        accent: "#2a2a2a",
+        background: "#000000",
+        foreground: "#ffffff"
+      },
+      config: {
+        font_body: "Inter",
+        font_heading: "Poppins",
+        max_width: "1280px"
+      },
+      pages: {
+        home: {
+          sections: []
+        }
+      },
+      siteMeta: {
+        title: "Default Site",
+        description: "A default website"
+      }
+    };
+
     return (
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased`}>
+          <AppProvider initialSite={defaultSiteData}>
+            <ThemeProvider>
+              <NewThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem={false}
+                disableTransitionOnChange
+              >
+                {children}
+                <FloatingActions />
+              </NewThemeProvider>
+            </ThemeProvider>
+          </AppProvider>
+        </body>
       </html>
     );
   }

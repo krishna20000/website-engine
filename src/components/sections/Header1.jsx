@@ -31,6 +31,7 @@ export default function Header1({ content, items, theme, config }) {
                   height={40}
                   className="h-full w-auto object-contain"
                   priority
+                  unoptimized
                 />
               </div>
             </Link>

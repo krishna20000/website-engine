@@ -1,77 +1,155 @@
+"use client";
+
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { ArrowRight, Scissors, Users, Star } from 'lucide-react';
 
-export default function Hero1({ content, items, theme, config }) {
-  // Fallback values if content is not provided
+export function Hero1({ content, items, theme, config }) {
   const {
-    title = 'Welcome to our website',
-    subtitle = 'Your subtitle here',
-    description = 'This is a brief description of what you do. Add a few sentences to introduce your business to new visitors.',
-    image_url = '/placeholder-hero.jpg',
+    title = 'Classic Cuts, Modern Style',
+    subtitle = 'Welcome to Elite Cuts',
+    description = 'Experience the perfect blend of traditional barbering and contemporary style. Our expert barbers are dedicated to giving you the look you deserve.',
+    image_url,
     background_url,
-    cta_text = 'Get Started',
-    cta_link = '#',
+    cta = {
+      primary: {
+        text: 'Book Now',
+        link: '/book'
+      },
+      secondary: {
+        text: 'View Services',
+        link: '#services'
+      }
+    },
+    stats = [
+      {
+        value: '10+',
+        label: 'Years Experience'
+      },
+      {
+        value: '5000+',
+        label: 'Happy Clients'
+      },
+      {
+        value: '4.9',
+        label: 'Customer Rating'
+      }
+    ]
   } = content || {};
 
   return (
-    <div className="relative w-full overflow-hidden">
-      {/* Background image or color */}
-      {background_url ? (
-        <div className="absolute inset-0 z-0">
+    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        {background_url && (
           <Image
             src={background_url}
-            alt="Background"
+            alt="Barber Shop Background"
             fill
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-black/50" />
-        </div>
-      ) : (
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-primary/10" />
-      )}
+        )}
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/80" />
+      </div>
 
-      <div className="container relative z-10 mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
-          <div className="flex flex-col space-y-6">
-            {subtitle && (
-              <span className="inline-block text-sm font-medium uppercase tracking-wider text-primary">
-                {subtitle}
-              </span>
-            )}
-            {title && (
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                {title}
-              </h1>
-            )}
-            {description && (
-              <p className="max-w-prose text-lg text-muted-foreground">
-                {description}
-              </p>
-            )}
-            {cta_text && cta_link && (
-              <div className="flex flex-wrap gap-4">
-                <Button asChild size="lg">
-                  <Link href={cta_link}>{cta_text}</Link>
-                </Button>
+      <div className="container relative z-10 px-4 mx-auto sm:px-6 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-2">
+          {/* Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col justify-center"
+          >
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-full"
+            >
+              <Scissors className="w-4 h-4 mr-2" />
+              {subtitle}
+            </motion.span>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
+            >
+              {title}
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mt-6 text-lg text-muted-foreground"
+            >
+              {description}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="flex flex-col sm:flex-row gap-4 mt-8"
+            >
+              <Link
+                href={cta.primary.link}
+                className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white bg-primary rounded-full hover:bg-primary/90 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
+              >
+                {cta.primary.text}
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+              <Link
+                href={cta.secondary.link}
+                className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-foreground bg-background/50 backdrop-blur-sm rounded-full hover:bg-background/80 transition-all duration-300"
+              >
+                {cta.secondary.text}
+              </Link>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="grid grid-cols-3 gap-8 mt-16"
+            >
+              {stats.map((stat, index) => (
+                <div key={stat.label} className="text-center">
+                  <div className="text-3xl font-bold text-primary">{stat.value}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* Decorative Elements */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="relative hidden lg:block"
+          >
+            <div className="absolute inset-0 bg-primary/5 rounded-3xl transform rotate-3" />
+            <div className="absolute inset-0 bg-primary/10 rounded-3xl transform -rotate-3" />
+            {image_url && (
+              <div className="relative aspect-square rounded-3xl overflow-hidden">
+                <Image
+                  src={image_url}
+                  alt="Barber Shop Interior"
+                  fill
+                  className="object-cover"
+                />
               </div>
             )}
-          </div>
-          {image_url && (
-            <div className="relative mx-auto aspect-video w-full max-w-lg overflow-hidden rounded-lg lg:max-w-none">
-              <Image
-                src={image_url}
-                alt={title || 'Hero image'}
-                width={800}
-                height={600}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </div>
-          )}
+          </motion.div>
         </div>
       </div>
-    </div>
+    </section>
   );
 } 
