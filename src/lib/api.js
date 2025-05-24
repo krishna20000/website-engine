@@ -1,4 +1,4 @@
-import { MOCK_DATA } from '@/data/d2d.json';
+import MOCK_DATA from '@/data/d2d.json';
 
 // Ensure MOCK_DATA is always available
 const DEFAULT_DATA = {
@@ -29,26 +29,13 @@ const DEFAULT_DATA = {
 
 export async function fetchPageData(subdomain) {
   try {
-    // Simulate API call delay
+    // Simulate API call delay (can keep this if needed for testing loading states)
     await new Promise(resolve => setTimeout(resolve, 100));
 
-    // For development, always return mock data
-    if (process.env.NODE_ENV === 'development') {
-      return MOCK_DATA || DEFAULT_DATA;
-    }
+    // Always return mock data for now, mimicking localhost behavior
+    console.log('fetchPageData: Returning MOCK_DATA');
+    return MOCK_DATA || DEFAULT_DATA;
 
-    // Return mock data with proper structure
-    return {
-      site: {
-        name: MOCK_DATA?.site?.name || DEFAULT_DATA.site.name,
-        description: MOCK_DATA?.site?.description || DEFAULT_DATA.site.description,
-        logo: MOCK_DATA?.site?.logo || DEFAULT_DATA.site.logo,
-        favicon: MOCK_DATA?.site?.favicon || DEFAULT_DATA.site.favicon,
-      },
-      theme: MOCK_DATA?.theme || DEFAULT_DATA.theme,
-      config: MOCK_DATA?.config || DEFAULT_DATA.config,
-      pages: MOCK_DATA?.pages || DEFAULT_DATA.pages
-    };
   } catch (error) {
     console.error('Error in fetchPageData:', error);
     return DEFAULT_DATA;
