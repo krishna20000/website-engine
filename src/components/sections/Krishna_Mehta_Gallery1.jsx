@@ -53,7 +53,7 @@ export function Gallery1({ content, items, theme, config }) {
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent opacity-80 transition-opacity duration-300 lg:opacity-0 lg:group-hover:opacity-100">
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     <span className="inline-block px-3 py-1 text-xs font-medium text-primary bg-primary/10 rounded-full">
                       {item.category}
