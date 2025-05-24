@@ -5,7 +5,7 @@ import ThemeProvider from "@/contexts/ThemeProvider";
 import { fetchSiteConfigAndThemes } from "@/lib/api/siteservice";
 import { headers } from "next/headers";
 import { ThemeProvider as NewThemeProvider } from "@/components/theme-provider";
-import { FloatingActions } from '@/components/FloatingActions';
+import { FloatingActions } from '@/components/Krishna_Mehta_FloatingActions';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,7 +35,6 @@ function getSubdomain(host) {
 
 // Force dynamic rendering since we're using headers()
 export const dynamic = "force-dynamic";
-export const runtime = "edge";
 
 export const metadata = {
   title: "Modern Dark Theme Website",

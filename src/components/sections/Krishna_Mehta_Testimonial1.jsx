@@ -80,4 +80,4 @@ export function Testimonial1({ content, items, theme, config }) {
       </div>
     </section>
   );
-}
+} 
